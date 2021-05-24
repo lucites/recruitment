@@ -1,0 +1,49 @@
+package plus.proptech.recruitment.service;
+
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import plus.proptech.recruitment.component.SkillCheckObjectFactory;
+import plus.proptech.recruitment.resource.SkillCheckResource;
+
+/**
+ * スキルチェックオブジェクト操作用のサービス
+ * 
+ * @author sho-yamashita
+ *
+ */
+@Service
+@RequiredArgsConstructor
+public class SkillCheckService {
+
+	private final @NonNull SkillCheckObjectFactory skillCheckObjectFactory;
+
+	public List<SkillCheckResource> search(SkillCheckResourceCriteria criteria) {
+		var list = skillCheckObjectFactory.create();
+
+		Predicate<SkillCheckResource> filterCondition = l -> {
+			if (criteria.getName() != null && criteria.getAge() != null) {
+				return l.getName().contains(criteria.getName()) && l.getAge() >= criteria.getAge();
+			} else if (criteria.getAge() != null) {
+				if (criteria.getAge() > 90) {
+					throw new RuntimeException("90歳以上は検索対象外です");
+				}
+				return l.getAge() >= criteria.getAge();
+			} else if (criteria.getName() != null) {
+				return l.getName().contains(criteria.getName());
+			}
+			return true;
+		};
+		if (!CollectionUtils.isEmpty(list)) {
+			return list.stream().filter(filterCondition).collect(Collectors.toList());
+		}
+		return list;
+	}
+
+}
