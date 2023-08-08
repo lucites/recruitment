@@ -31,14 +31,14 @@ public class SkillCheckController {
 	public List<SkillCheckResource> search(final @RequestParam(value = "name") Optional<String> name,
 			final @RequestParam(value = "age") Optional<Integer> age) {
 
-		var crieriaBuilder = SkillCheckResourceCriteria.builder();
+		var criteriaBuilder = SkillCheckResourceCriteria.builder();
 		if (name.isPresent()) {
-			crieriaBuilder.name(name.get());
+			criteriaBuilder.name(name.get());
 		}
 		if (age.isPresent()) {
-			crieriaBuilder.age(age.get());
+			criteriaBuilder.age(age.get());
 		}
-		var resources = skillCheckService.search(crieriaBuilder.build());
+		var resources = skillCheckService.search(criteriaBuilder.build());
 		return resources;
 	}
 

@@ -1,7 +1,7 @@
 # Getting Started
 
 # IDE
-java11+ suported IDE only
+java11+ supported IDE only
 
 # import project
 import -> gradle project -> choose cloned repository
