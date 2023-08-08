@@ -3,10 +3,11 @@ package plus.proptech.recruitment.service;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 
 /**
  * スキルチェックデータ検索条件
- * 
+ *
  * @author sho-yamashita
  *
  */
@@ -21,5 +22,6 @@ public class SkillCheckResourceCriteria {
 	private final Integer age;
 
 	// スキルがあるかどうか
-	private final boolean hasSkill;
+	@Accessors(fluent = true)
+	private final Boolean hasSkill;
 }

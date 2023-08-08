@@ -14,7 +14,7 @@ import plus.proptech.recruitment.resource.SkillCheckResource;
 
 /**
  * スキルチェックオブジェクト操作用のサービス
- * 
+ *
  * @author sho-yamashita
  *
  */
@@ -30,18 +30,28 @@ public class SkillCheckService {
 		Predicate<SkillCheckResource> filterCondition = l -> {
 			// 年齢条件のみ指定されている場合は年齢条件のみで判定する。検索対象上限付き
 			// 2条件以上指定されていればAND条件として判定する
-			if (criteria.getName() != null && criteria.getAge() != null) {
-				return l.getName().contains(criteria.getName()) && l.getAge() >= criteria.getAge();
-			} else if (criteria.getAge() != null) {
+			if (criteria.getName() == null && criteria.hasSkill() == null && criteria.getAge() != null) {
 				if (criteria.getAge() > 90) {
 					throw new RuntimeException("90歳以上は検索対象外です");
 				}
 				return l.getAge() >= criteria.getAge();
-			} else if (criteria.getName() != null) {
-				return l.getName().contains(criteria.getName());
+			}
+			if (criteria.getName() != null) {
+				if (!l.getName().contains(criteria.getName())) {
+					return false;
+				}
+			}
+			if (criteria.getAge() != null) {
+				if (l.getAge() < criteria.getAge()) {
+					return false;
+				}
+			}
+			if (criteria.hasSkill() != null) {
+				return l.hasSkill()==criteria.hasSkill();
 			}
 			return true;
 		};
+
 		if (!CollectionUtils.isEmpty(list)) {
 			return list.stream().filter(filterCondition).collect(Collectors.toList());
 		}

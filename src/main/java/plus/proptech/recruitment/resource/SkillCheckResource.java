@@ -1,10 +1,11 @@
 package plus.proptech.recruitment.resource;
 
 import lombok.Value;
+import lombok.experimental.Accessors;
 
 /**
  * スキルチェック用の結果を返すオブジェクト
- * 
+ *
  * @author sho-yamashita
  *
  */
@@ -19,5 +20,6 @@ public class SkillCheckResource {
 	/*
 	 * スキルを持ってるかどうか
 	 */
+	@Accessors(fluent = true)
 	private final boolean hasSkill;
 }

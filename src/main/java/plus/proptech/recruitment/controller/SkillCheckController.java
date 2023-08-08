@@ -16,7 +16,7 @@ import plus.proptech.recruitment.service.SkillCheckService;
 
 /**
  * スキルチェック用のコントローラー
- * 
+ *
  * @author sho-yamashita
  *
  */
@@ -28,15 +28,19 @@ public class SkillCheckController {
 	private final @NonNull SkillCheckService skillCheckService;
 
 	@GetMapping
-	public List<SkillCheckResource> search(final @RequestParam(value = "name") Optional<String> name,
-			final @RequestParam(value = "age") Optional<Integer> age) {
-
+	public List<SkillCheckResource> search(
+			final @RequestParam(value = "name") Optional<String> name,
+			final @RequestParam(value = "age") Optional<Integer> age,
+			final @RequestParam(value = "hasSkill") Optional<Boolean> hasSkill) {
 		var criteriaBuilder = SkillCheckResourceCriteria.builder();
 		if (name.isPresent()) {
 			criteriaBuilder.name(name.get());
 		}
 		if (age.isPresent()) {
 			criteriaBuilder.age(age.get());
+		}
+		if (hasSkill.isPresent()) {
+			criteriaBuilder.hasSkill(hasSkill.get());
 		}
 		var resources = skillCheckService.search(criteriaBuilder.build());
 		return resources;
