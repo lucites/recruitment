@@ -28,6 +28,8 @@ public class SkillCheckService {
 		var list = skillCheckObjectFactory.create();
 
 		Predicate<SkillCheckResource> filterCondition = l -> {
+			// 年齢条件のみ指定されている場合は年齢条件のみで判定する。検索対象上限付き
+			// 2条件以上指定されていればAND条件として判定する
 			if (criteria.getName() != null && criteria.getAge() != null) {
 				return l.getName().contains(criteria.getName()) && l.getAge() >= criteria.getAge();
 			} else if (criteria.getAge() != null) {
